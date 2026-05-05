@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "mandria-motrice-popapp"
+  },
+  "activeAccounts": {
+    "default": "admin@pop-appfactory.com"
+  }
+}

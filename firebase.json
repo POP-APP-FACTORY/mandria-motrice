@@ -4,9 +4,11 @@
     "ignore": [
       "firebase.json",
       ".firebaserc",
+      ".gitignore",
       "README.md",
       "files.zip",
       "**/.*",
+      "**/.*/**",
       "**/node_modules/**"
     ],
     "cleanUrls": true,
