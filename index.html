@@ -63,10 +63,23 @@
     font-family:"JetBrains Mono",monospace;
     font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
     color:var(--ink-soft);
-    display:flex;justify-content:space-between;
-    margin-bottom:1.5rem;
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:1.5rem;gap:1rem;flex-wrap:wrap;
   }
-  .meta span{display:inline-block}
+
+  .lang-switch{display:flex;gap:.1rem}
+  .lang-switch button{
+    background:transparent;border:1px solid transparent;
+    padding:.25rem .45rem;cursor:pointer;
+    font-family:"JetBrains Mono",monospace;font-size:.65rem;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);
+    transition:background .15s,color .15s,border-color .15s;
+  }
+  .lang-switch button:hover{background:rgba(26,20,16,.08)}
+  .lang-switch button.on{
+    background:var(--ink);color:var(--paper);border-color:var(--ink);
+  }
+
   h1{
     font-family:"DM Serif Display",serif;
     font-size:clamp(2.2rem,6vw,4rem);
@@ -92,13 +105,25 @@
 
   main{padding:clamp(1.5rem,4vw,3rem)}
 
-  /* Input */
+  /* ─── Step labels ─────────────────────────── */
+  .step-label{
+    font-family:"JetBrains Mono",monospace;
+    font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;
+    color:var(--ink-soft);
+    text-align:center;
+    margin:2rem 0 1rem;
+    display:flex;align-items:center;justify-content:center;gap:1rem;
+  }
+  .step-label::before,.step-label::after{
+    content:"";flex:0 0 60px;height:1px;background:var(--rule);
+  }
+
+  /* ─── Power input ─────────────────────────── */
   .input-group{
     display:grid;grid-template-columns:1fr auto;gap:0;
     border:1.5px solid var(--ink);
     background:var(--paper-2);
     align-items:stretch;
-    margin-bottom:2rem;
   }
   .input-wrap{position:relative;padding:1.2rem 1.4rem .9rem}
   .input-label{
@@ -113,7 +138,9 @@
     color:var(--ink);
     letter-spacing:-.01em;
     -moz-appearance:textfield;
+    font-style:italic;
   }
+  #power::placeholder{color:rgba(26,20,16,.32);font-style:italic}
   #power::-webkit-outer-spin-button,#power::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 
   .unit-toggle{
@@ -130,83 +157,117 @@
   .unit-toggle button.on{background:var(--ink);color:var(--paper)}
   .unit-toggle button:hover:not(.on){background:rgba(26,20,16,.08)}
 
-  /* Conversion summary */
-  .conversion{
-    text-align:center;
-    padding:1rem 0 2rem;
-    font-family:"JetBrains Mono",monospace;
-    font-size:.8rem;letter-spacing:.12em;
-    color:var(--ink-soft);
-  }
-  .conversion strong{
-    font-family:"DM Serif Display",serif;
-    font-style:italic;font-weight:400;
-    font-size:1.1rem;
-    color:var(--ink);
-    letter-spacing:0;
-  }
-
-  /* Animal grid */
-  .grid{
+  /* ─── Animal picker ───────────────────────── */
+  .picker{
     display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
+    grid-template-columns:repeat(auto-fill, minmax(140px,1fr));
     gap:0;
     border-top:1.5px solid var(--ink);
     border-left:1.5px solid var(--ink);
   }
-  .card{
+  .pick-card{
     border-right:1.5px solid var(--ink);
     border-bottom:1.5px solid var(--ink);
-    padding:1.6rem 1.3rem 1.3rem;
-    position:relative;
+    padding:1.2rem .8rem 1rem;
     background:var(--paper);
-    transition:background .2s;
+    cursor:pointer;
+    transition:background .18s, transform .18s;
+    text-align:center;
+    position:relative;
+    font-family:inherit;color:inherit;
+    width:100%;
+    font:inherit;
   }
-  .card:hover{background:var(--paper-2)}
-  .card .num{
-    font-family:"DM Serif Display",serif;
-    font-size:clamp(2rem,4.5vw,2.8rem);
-    line-height:1;letter-spacing:-.02em;
-    color:var(--ink);
-    display:block;
+  .pick-card:hover{background:var(--paper-2)}
+  .pick-card:focus-visible{
+    outline:2px solid var(--accent);outline-offset:-4px;
   }
-  .card .unit{
-    font-family:"Fraunces",serif;
-    font-style:italic;font-size:1.4rem;
-    color:var(--accent);
-    margin-left:.2em;
+  .pick-card .ico{
+    font-size:2.2rem;line-height:1;display:block;margin-bottom:.5rem;
+    transition:transform .25s ease;
   }
-  .card .name{
-    font-family:"JetBrains Mono",monospace;
-    font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;
-    color:var(--ink-soft);
-    margin-top:.8rem;
-    border-top:1px solid var(--rule);
-    padding-top:.6rem;
-    display:flex;justify-content:space-between;align-items:baseline;
-  }
-  .card .glyph{
-    position:absolute;top:.8rem;right:.9rem;
-    font-family:"DM Serif Display",serif;font-style:italic;
-    font-size:.85rem;color:var(--ink-soft);opacity:.6;
-  }
-  .card .ratio{
-    font-family:"JetBrains Mono",monospace;
-    font-size:.6rem;letter-spacing:.1em;
-    color:var(--ink-soft);opacity:.7;
-  }
-
-  /* Footer */
-  footer{
-    padding:1.5rem clamp(1.5rem,4vw,3rem);
-    border-top:1.5px solid var(--ink);
+  .pick-card:hover .ico{transform:scale(1.12) rotate(-4deg)}
+  .pick-card .lbl{
     font-family:"JetBrains Mono",monospace;
     font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;
     color:var(--ink-soft);
-    display:flex;justify-content:space-between;flex-wrap:wrap;gap:.8rem;
+    display:block;
   }
-  footer em{font-family:"Fraunces",serif;font-style:italic;letter-spacing:0;text-transform:none;font-size:.8rem;color:var(--ink)}
+  .pick-card[aria-selected="true"]{
+    background:var(--ink);
+  }
+  .pick-card[aria-selected="true"] .lbl{color:var(--paper)}
+  .pick-card[aria-selected="true"] .ico{transform:scale(1.05)}
 
+  /* ─── Result panel ────────────────────────── */
+  .result{
+    margin-top:2rem;
+    border:1.5px solid var(--ink);
+    background:var(--paper-2);
+    padding:clamp(1.5rem,4vw,2.4rem) clamp(1rem,4vw,3rem);
+    text-align:center;
+    min-height:230px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    position:relative;
+  }
+  .result-empty{
+    font-family:"Fraunces",serif;font-style:italic;
+    color:var(--ink-soft);opacity:.7;font-size:1rem;
+    line-height:1.5;
+  }
+  .loader{
+    display:flex;flex-direction:column;align-items:center;gap:.8rem;
+  }
+  .loader .spin{
+    font-size:3rem;line-height:1;display:block;
+    animation:spin 0.7s ease-in-out infinite;
+  }
+  .loader .lbl{
+    font-family:"JetBrains Mono",monospace;
+    font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  @keyframes spin{
+    0%{transform:rotate(0deg) scale(1)}
+    50%{transform:rotate(180deg) scale(1.15)}
+    100%{transform:rotate(360deg) scale(1)}
+  }
+
+  .result-content{display:flex;flex-direction:column;align-items:center;gap:.4rem;animation:fadeIn .35s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .result-intro{
+    font-family:"JetBrains Mono",monospace;
+    font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .result-number{
+    font-family:"DM Serif Display",serif;
+    font-size:clamp(3.5rem,11vw,6.5rem);
+    line-height:1;letter-spacing:-.03em;
+    color:var(--ink);
+    font-style:italic;
+  }
+  .result-animal{
+    font-family:"Fraunces",serif;font-style:italic;
+    font-size:clamp(1.6rem,4vw,2.2rem);
+    color:var(--accent);
+    margin-top:-.1em;
+  }
+  .result-animal .emoji{font-style:normal;margin-right:.3em}
+  .result-secondary{
+    margin-top:.8rem;
+    font-family:"JetBrains Mono",monospace;
+    font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .result-secondary strong{
+    font-family:"DM Serif Display",serif;
+    font-style:italic;font-weight:400;
+    font-size:.95rem;color:var(--ink);letter-spacing:0;
+  }
+
+  /* ─── Methodology + footer ────────────────── */
   details{
     margin:2rem 0 0;
     border-top:1px solid var(--rule);
@@ -227,11 +288,31 @@
   }
   details p + p{margin-top:.8rem}
 
+  footer{
+    padding:1.5rem clamp(1.5rem,4vw,3rem);
+    border-top:1.5px solid var(--ink);
+    font-family:"JetBrains Mono",monospace;
+    font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .footer-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.8rem}
+  footer em{font-family:"Fraunces",serif;font-style:italic;letter-spacing:0;text-transform:none;font-size:.8rem;color:var(--ink)}
+  footer a{color:inherit;text-decoration:none;border-bottom:1px solid currentColor}
+  .footer-version{
+    margin-top:1rem;text-align:center;
+    font-size:.6rem;letter-spacing:.3em;
+    color:var(--ink-soft);opacity:.55;
+  }
+  .footer-version .v{color:var(--accent);opacity:.85}
+
   @media (max-width:520px){
     .input-group{grid-template-columns:1fr}
     .unit-toggle{flex-direction:row;border-left:0;border-top:1.5px solid var(--ink)}
     .unit-toggle button{border-bottom:0;border-right:1px solid var(--rule)}
     .unit-toggle button:last-child{border-right:0}
+    .picker{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
+    .pick-card .ico{font-size:1.9rem}
+    .meta{font-size:.6rem}
   }
 </style>
 </head>
@@ -239,163 +320,485 @@
 <div class="frame">
   <header>
     <div class="meta">
-      <span>Vol. I · No. 1</span>
-      <span>Edizione Italiana</span>
+      <span data-i18n="vol">Vol. I · No. 1</span>
+      <span class="lang-switch" id="lang-switch" role="tablist" aria-label="Language"></span>
     </div>
     <h1>Mandria <em>Motrice</em></h1>
-    <div class="rule-decor"><span>Convertitore di Potenza Zootecnica</span></div>
-    <p class="tag">Quanti animali ha la tua automobile?</p>
+    <div class="rule-decor"><span data-i18n="subtitle">Convertitore di Potenza Zootecnica</span></div>
+    <p class="tag" data-i18n="tagline">Quanti animali ha la tua automobile?</p>
   </header>
 
   <main>
+    <h2 class="step-label" data-i18n="step1">Inserisci la potenza</h2>
     <div class="input-group">
       <div class="input-wrap">
-        <label class="input-label" for="power">Potenza del veicolo</label>
-        <input type="number" id="power" value="200" min="0" step="1" inputmode="decimal">
+        <label class="input-label" for="power" data-i18n="power_label">Potenza del veicolo</label>
+        <input type="number" id="power" min="0" step="1" inputmode="decimal" autocomplete="off">
       </div>
-      <div class="unit-toggle" role="tablist">
-        <button data-unit="cv" class="on" role="tab">CV</button>
-        <button data-unit="hp" role="tab">HP</button>
-        <button data-unit="kw" role="tab">kW</button>
+      <div class="unit-toggle" role="tablist" aria-label="Unit">
+        <button data-unit="cv" class="on" role="tab" aria-selected="true">CV</button>
+        <button data-unit="hp" role="tab" aria-selected="false">HP</button>
+        <button data-unit="kw" role="tab" aria-selected="false">kW</button>
       </div>
     </div>
 
-    <div class="conversion">
-      ovvero <strong id="kw-out">147.10 kW</strong> &middot; <strong id="hp-out">197.28 HP</strong>
-    </div>
+    <h2 class="step-label" data-i18n="step2">Scegli un animale</h2>
+    <div class="picker" id="picker" role="radiogroup" aria-label="Animal"></div>
 
-    <div class="grid" id="grid"></div>
+    <section class="result" id="result" aria-live="polite">
+      <div class="result-empty" id="result-empty" data-i18n="result_empty">
+        ↑ inserisci una potenza, poi scegli un animale
+      </div>
+    </section>
 
     <details>
-      <summary>Note metodologiche</summary>
-      <p>Il <em>cavallo vapore</em> (CV, o <em>metric horsepower</em>) fu definito a fine '800 a partire dalla potenza che si supponeva un cavallo da tiro potesse esercitare sostenendo un carico — una stima ottimistica e un po' arcaica. 1 CV equivale a 735.49875 W; 1 HP (horsepower meccanico anglosassone) a 745.7 W. Un cavallo vero, in regime sostenuto, eroga circa 0.1 CV.</p>
-      <p>Per coerenza con la logica originale, ogni animale ha qui una <em>potenza nominale di riferimento</em>, calcolata sullo stesso principio del CV: una stima del lavoro di trazione sostenuto, leggermente generosa. I valori sono indicativi e pensati per il confronto, non per omologazioni ministeriali.</p>
+      <summary data-i18n="methodology_label">Note metodologiche</summary>
+      <p data-i18n="methodology_p1">Il <em>cavallo vapore</em> (CV) fu definito a fine '800 a partire dalla potenza che si supponeva un cavallo da tiro potesse esercitare sostenendo un carico — una stima ottimistica e un po' arcaica. 1 CV equivale a 735.49875 W; 1 HP (horsepower meccanico anglosassone) a 745.7 W. Un cavallo vero, in regime sostenuto, eroga circa 0.1 CV.</p>
+      <p data-i18n="methodology_p2">Per coerenza con la logica originale, ogni animale ha qui una <em>potenza nominale di riferimento</em>, calcolata sullo stesso principio del CV: una stima del lavoro di trazione sostenuto, leggermente generosa. I valori sono indicativi e pensati per il confronto, non per omologazioni ministeriali.</p>
     </details>
   </main>
 
   <footer>
-    <span>Mandria Motrice</span>
-    <em>misurato in unità non SI dal 2026</em>
-    <span><a href="https://pop-appfactory.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px solid currentColor">Pop-App Factory</a></span>
+    <div class="footer-row">
+      <span>Mandria Motrice</span>
+      <em data-i18n="footer_method">misurato in unità non SI dal MMXXVI</em>
+      <span><a href="https://pop-appfactory.com" target="_blank" rel="noopener">Pop-App Factory</a></span>
+    </div>
+    <div class="footer-version">edizione <span class="v" id="app-version">v2.0.0</span></div>
   </footer>
 </div>
 
 <script>
-  // Conversioni base
-  const CV_TO_W = 735.49875;
-  const HP_TO_W = 745.7;
-  const CV_TO_HP = CV_TO_W / HP_TO_W; // ~0.9863
-  const HP_TO_CV = HP_TO_W / CV_TO_W; // ~1.0139
+"use strict";
 
-  // Animali: potenza nominale in Watt, definita con la stessa logica del CV
-  // (lavoro di trazione sostenuto stimato, leggermente generoso).
-  // Riferimento: 1 CV cavallo metrico = 735.5 W
-  const animals = [
-    { id:"gallina",  nome:"Gallina",  plurale:"galline",  watt:    7.355, glifo:"✺", emoji:"🐔" },
-    { id:"pecora",   nome:"Pecora",   plurale:"pecore",   watt:   73.55,  glifo:"☘", emoji:"🐑" },
-    { id:"maiale",   nome:"Maiale",   plurale:"maiali",   watt:  220.6,   glifo:"❉", emoji:"🐖" },
-    { id:"asino",    nome:"Asino",    plurale:"asini",    watt:  367.7,   glifo:"❋", emoji:"🫏" },
-    { id:"mucca",    nome:"Mucca",    plurale:"mucche",   watt:  588.4,   glifo:"✦", emoji:"🐄" },
-    { id:"bue",      nome:"Bue",      plurale:"buoi",     watt:  882.6,   glifo:"✤", emoji:"🐂" },
-    { id:"cammello", nome:"Cammello", plurale:"cammelli", watt: 1029.7,   glifo:"✱", emoji:"🐪" },
-    { id:"elefante", nome:"Elefante", plurale:"elefanti", watt: 2206.5,   glifo:"❈", emoji:"🐘" }
-  ];
-  // Riferimenti: 1 CV = 735.5 W. Gallina ≈0.01, Pecora ≈0.1, Maiale ≈0.3,
-  // Asino ≈0.5, Mucca ≈0.8, Bue ≈1.2, Cammello ≈1.4, Elefante ≈3 CV.
-  // Valori coerenti tra loro, non omologazioni ministeriali.
+const APP_VERSION = "2.0.0";
 
-  // Stato (può essere precaricato da URL: ?cv=200, ?hp=150, ?kw=110)
-  const params = new URLSearchParams(location.search);
-  let unit = "cv";
-  let initial = 200;
-  for (const u of ["cv","hp","kw"]) {
-    if (params.has(u)) {
-      const v = parseFloat(params.get(u));
-      if (Number.isFinite(v) && v >= 0) { unit = u; initial = v; }
-      break;
-    }
+/* ──────────────────────────────────────────────────────────────
+   COSTANTI FISICHE
+   ────────────────────────────────────────────────────────────── */
+const CV_TO_W = 735.49875;   // 1 CV (cavallo vapore metrico, CIPM 1889)
+const HP_TO_W = 745.7;       // 1 HP (horsepower meccanico anglosassone)
+
+/* ──────────────────────────────────────────────────────────────
+   ARCHIVIO ANIMALI
+   Ogni voce: id stabile, watt nominali, emoji, traduzioni i18n.
+   Aggiungere un nuovo animale = aggiungere un oggetto qui.
+   I watt sono stimati con la stessa logica del CV originale
+   (lavoro di trazione sostenuto, leggermente generoso).
+   ────────────────────────────────────────────────────────────── */
+const ANIMALS = [
+  { id:"gallina",  watt:    7.355, emoji:"🐔",
+    i18n:{ it:["gallina","galline"],  en:["chicken","chickens"], es:["gallina","gallinas"], fr:["poule","poules"],     de:["Huhn","Hühner"] } },
+  { id:"pecora",   watt:   73.55,  emoji:"🐑",
+    i18n:{ it:["pecora","pecore"],    en:["sheep","sheep"],      es:["oveja","ovejas"],     fr:["mouton","moutons"],   de:["Schaf","Schafe"] } },
+  { id:"capra",    watt:  110.32,  emoji:"🐐",
+    i18n:{ it:["capra","capre"],      en:["goat","goats"],       es:["cabra","cabras"],     fr:["chèvre","chèvres"],   de:["Ziege","Ziegen"] } },
+  { id:"maiale",   watt:  220.6,   emoji:"🐖",
+    i18n:{ it:["maiale","maiali"],    en:["pig","pigs"],         es:["cerdo","cerdos"],     fr:["cochon","cochons"],   de:["Schwein","Schweine"] } },
+  { id:"asino",    watt:  367.7,   emoji:"🫏",
+    i18n:{ it:["asino","asini"],      en:["donkey","donkeys"],   es:["burro","burros"],     fr:["âne","ânes"],         de:["Esel","Esel"] } },
+  { id:"lama",     watt:  515.0,   emoji:"🦙",
+    i18n:{ it:["lama","lama"],        en:["llama","llamas"],     es:["llama","llamas"],     fr:["lama","lamas"],       de:["Lama","Lamas"] } },
+  { id:"mucca",    watt:  588.4,   emoji:"🐄",
+    i18n:{ it:["mucca","mucche"],     en:["cow","cows"],         es:["vaca","vacas"],       fr:["vache","vaches"],     de:["Kuh","Kühe"] } },
+  { id:"mulo",     watt:  735.5,   emoji:"🫏",
+    i18n:{ it:["mulo","muli"],        en:["mule","mules"],       es:["mula","mulas"],       fr:["mulet","mulets"],     de:["Maultier","Maultiere"] } },
+  { id:"bue",      watt:  882.6,   emoji:"🐂",
+    i18n:{ it:["bue","buoi"],         en:["ox","oxen"],          es:["buey","bueyes"],      fr:["bœuf","bœufs"],       de:["Ochse","Ochsen"] } },
+  { id:"cammello", watt: 1029.7,   emoji:"🐪",
+    i18n:{ it:["cammello","cammelli"],en:["camel","camels"],     es:["camello","camellos"], fr:["chameau","chameaux"], de:["Kamel","Kamele"] } },
+  { id:"bisonte",  watt: 1471.0,   emoji:"🦬",
+    i18n:{ it:["bisonte","bisonti"],  en:["bison","bison"],      es:["bisonte","bisontes"], fr:["bison","bisons"],     de:["Bison","Bisons"] } },
+  { id:"elefante", watt: 2206.5,   emoji:"🐘",
+    i18n:{ it:["elefante","elefanti"],en:["elephant","elephants"],es:["elefante","elefantes"],fr:["éléphant","éléphants"],de:["Elefant","Elefanten"] } },
+  /* apocrifi */
+  { id:"mammut",   watt: 3677.5,   emoji:"🦣", apocryphal:true,
+    i18n:{ it:["mammut","mammut"],    en:["mammoth","mammoths"], es:["mamut","mamuts"],     fr:["mammouth","mammouths"],de:["Mammut","Mammute"] } },
+  { id:"trex",     watt: 5882.0,   emoji:"🦖", apocryphal:true,
+    i18n:{ it:["T-Rex","T-Rex"],      en:["T-Rex","T-Rex"],      es:["T-Rex","T-Rex"],      fr:["T-Rex","T-Rex"],       de:["T-Rex","T-Rex"] } }
+];
+
+/* ──────────────────────────────────────────────────────────────
+   I18N — STRINGHE DI INTERFACCIA
+   ────────────────────────────────────────────────────────────── */
+const LANGS = ["it","en","es","fr","de"];
+const I18N = {
+  it:{
+    htmlLang:"it", ogLocale:"it_IT",
+    title:"Mandria Motrice · Convertitore di Potenza Zootecnica",
+    metaDesc:"Quanti animali ha la tua automobile? Convertitore di cavalli vapore in mucche, asini, pecore, galline.",
+    vol:"Vol. I · No. 1",
+    subtitle:"Convertitore di Potenza Zootecnica",
+    tagline:"Quanti animali ha la tua automobile?",
+    step1:"Inserisci la potenza",
+    step2:"Scegli un animale",
+    power_label:"Potenza del veicolo",
+    power_placeholder:"es. 200",
+    result_empty:"↑ inserisci una potenza, poi scegli un animale",
+    result_need_power:"↑ prima inserisci una potenza valida",
+    loader:"calcolando…",
+    result_intro:"che equivale a",
+    result_secondary:"≡ {kw} kW · {hp} HP",
+    methodology_label:"Note metodologiche",
+    methodology_p1:"Il <em>cavallo vapore</em> (CV) fu definito a fine '800 a partire dalla potenza che si supponeva un cavallo da tiro potesse esercitare sostenendo un carico — una stima ottimistica e un po' arcaica. 1 CV equivale a 735.49875 W; 1 HP (horsepower meccanico anglosassone) a 745.7 W. Un cavallo vero, in regime sostenuto, eroga circa 0.1 CV.",
+    methodology_p2:"Per coerenza con la logica originale, ogni animale ha qui una <em>potenza nominale di riferimento</em>, calcolata sullo stesso principio del CV: una stima del lavoro di trazione sostenuto, leggermente generosa. I valori sono indicativi e pensati per il confronto, non per omologazioni ministeriali.",
+    footer_method:"misurato in unità non SI dal MMXXVI",
+    locale:"it-IT"
+  },
+  en:{
+    htmlLang:"en", ogLocale:"en_US",
+    title:"Mandria Motrice · Livestock Power Converter",
+    metaDesc:"How many farm animals does your car have? A converter from horsepower to cows, donkeys, sheep, chickens.",
+    vol:"Vol. I · No. 1",
+    subtitle:"Livestock Power Converter",
+    tagline:"How many animals does your car have?",
+    step1:"Enter the power",
+    step2:"Pick an animal",
+    power_label:"Vehicle power",
+    power_placeholder:"e.g. 200",
+    result_empty:"↑ enter a power, then pick an animal",
+    result_need_power:"↑ first enter a valid power",
+    loader:"computing…",
+    result_intro:"which equals",
+    result_secondary:"≡ {kw} kW · {hp} HP",
+    methodology_label:"Methodology",
+    methodology_p1:"The <em>metric horsepower</em> (CV) was defined in the late 1800s based on the power a draught horse was thought to sustain — an optimistic, somewhat archaic estimate. 1 CV equals 735.49875 W; 1 HP (mechanical horsepower) is 745.7 W. A real horse in sustained effort delivers about 0.1 CV.",
+    methodology_p2:"In keeping with the original logic, each animal has a <em>nominal reference power</em>, computed on the same basis as the CV: an estimate of sustained pulling work, slightly generous. Values are indicative and meant for comparison, not for ministerial homologation.",
+    footer_method:"measured in non-SI units since MMXXVI",
+    locale:"en-US"
+  },
+  es:{
+    htmlLang:"es", ogLocale:"es_ES",
+    title:"Mandria Motrice · Convertidor de Potencia Zootécnica",
+    metaDesc:"¿Cuántos animales de granja tiene tu coche? Conversor de caballos de vapor a vacas, burros, ovejas, gallinas.",
+    vol:"Vol. I · N.º 1",
+    subtitle:"Convertidor de Potencia Zootécnica",
+    tagline:"¿Cuántos animales tiene tu coche?",
+    step1:"Introduce la potencia",
+    step2:"Elige un animal",
+    power_label:"Potencia del vehículo",
+    power_placeholder:"p. ej. 200",
+    result_empty:"↑ introduce una potencia y luego elige un animal",
+    result_need_power:"↑ introduce primero una potencia válida",
+    loader:"calculando…",
+    result_intro:"equivale a",
+    result_secondary:"≡ {kw} kW · {hp} HP",
+    methodology_label:"Notas metodológicas",
+    methodology_p1:"El <em>caballo de vapor</em> (CV) se definió a finales del siglo XIX a partir de la potencia que se suponía que un caballo de tiro podía sostener — una estimación optimista y algo arcaica. 1 CV equivale a 735.49875 W; 1 HP (caballo mecánico anglosajón) a 745.7 W. Un caballo real, en régimen sostenido, entrega unos 0.1 CV.",
+    methodology_p2:"Por coherencia con la lógica original, cada animal tiene aquí una <em>potencia nominal de referencia</em>, calculada con el mismo principio del CV: una estimación del trabajo de tracción sostenido, ligeramente generosa. Los valores son indicativos y pensados para la comparación, no para homologaciones ministeriales.",
+    footer_method:"medido en unidades no SI desde MMXXVI",
+    locale:"es-ES"
+  },
+  fr:{
+    htmlLang:"fr", ogLocale:"fr_FR",
+    title:"Mandria Motrice · Convertisseur de Puissance Zootechnique",
+    metaDesc:"Combien d'animaux de ferme dans votre voiture ? Convertisseur de chevaux-vapeur en vaches, ânes, moutons, poules.",
+    vol:"Vol. I · No 1",
+    subtitle:"Convertisseur de Puissance Zootechnique",
+    tagline:"Combien d'animaux dans votre voiture ?",
+    step1:"Entrez la puissance",
+    step2:"Choisissez un animal",
+    power_label:"Puissance du véhicule",
+    power_placeholder:"ex. 200",
+    result_empty:"↑ entrez une puissance, puis choisissez un animal",
+    result_need_power:"↑ entrez d'abord une puissance valide",
+    loader:"calcul en cours…",
+    result_intro:"ce qui équivaut à",
+    result_secondary:"≡ {kw} kW · {hp} HP",
+    methodology_label:"Notes méthodologiques",
+    methodology_p1:"Le <em>cheval-vapeur</em> (CV) a été défini à la fin du XIX<sup>e</sup> siècle d'après la puissance qu'un cheval de trait était supposé pouvoir soutenir — une estimation optimiste et un peu archaïque. 1 CV équivaut à 735.49875 W ; 1 HP (cheval mécanique anglo-saxon) à 745.7 W. Un vrai cheval, en régime soutenu, fournit environ 0.1 CV.",
+    methodology_p2:"Par cohérence avec la logique originale, chaque animal a ici une <em>puissance nominale de référence</em>, calculée selon le même principe que le CV : une estimation du travail de traction soutenu, légèrement généreuse. Les valeurs sont indicatives et pensées pour la comparaison, pas pour des homologations ministérielles.",
+    footer_method:"mesuré en unités non SI depuis MMXXVI",
+    locale:"fr-FR"
+  },
+  de:{
+    htmlLang:"de", ogLocale:"de_DE",
+    title:"Mandria Motrice · Zootechnischer Leistungsumwandler",
+    metaDesc:"Wie viele Nutztiere stecken in Ihrem Auto? Umrechner von Pferdestärken in Kühe, Esel, Schafe, Hühner.",
+    vol:"Bd. I · Nr. 1",
+    subtitle:"Zootechnischer Leistungsumwandler",
+    tagline:"Wie viele Tiere hat Ihr Auto?",
+    step1:"Leistung eingeben",
+    step2:"Tier wählen",
+    power_label:"Fahrzeugleistung",
+    power_placeholder:"z. B. 200",
+    result_empty:"↑ erst eine Leistung eingeben, dann ein Tier wählen",
+    result_need_power:"↑ erst eine gültige Leistung eingeben",
+    loader:"berechne…",
+    result_intro:"entspricht",
+    result_secondary:"≡ {kw} kW · {hp} HP",
+    methodology_label:"Methodische Anmerkungen",
+    methodology_p1:"Die <em>metrische Pferdestärke</em> (PS, hier CV) wurde Ende des 19. Jahrhunderts nach der Leistung definiert, die ein Zugpferd anhaltend leisten sollte — eine optimistische und etwas archaische Schätzung. 1 CV = 735.49875 W; 1 HP (mechanisches Horsepower) = 745.7 W. Ein echtes Pferd liefert dauerhaft etwa 0.1 CV.",
+    methodology_p2:"In Anlehnung an die ursprüngliche Logik hat hier jedes Tier eine <em>nominelle Bezugsleistung</em>, nach demselben Prinzip wie das CV berechnet: eine Schätzung anhaltender Zugarbeit, leicht großzügig. Die Werte sind indikativ und für Vergleiche gedacht, nicht für amtliche Zulassungen.",
+    footer_method:"gemessen in Nicht-SI-Einheiten seit MMXXVI",
+    locale:"de-DE"
   }
-  const $power = document.getElementById("power");
-  $power.value = initial;
-  const $kw = document.getElementById("kw-out");
-  const $hp = document.getElementById("hp-out");
-  const $grid = document.getElementById("grid");
-  const $buttons = document.querySelectorAll(".unit-toggle button");
+};
 
-  function toWatt(value, u){
-    const v = parseFloat(value) || 0;
-    if(u === "cv") return v * CV_TO_W;
-    if(u === "hp") return v * HP_TO_W;
-    if(u === "kw") return v * 1000;
-    return 0;
+/* ──────────────────────────────────────────────────────────────
+   STATO + URL/storage
+   ────────────────────────────────────────────────────────────── */
+const params = new URLSearchParams(location.search);
+const STORE_LANG = "mm-lang";
+
+function detectLang(){
+  const fromQuery = params.get("lang");
+  if (fromQuery && LANGS.includes(fromQuery)) return fromQuery;
+  try {
+    const fromStore = localStorage.getItem(STORE_LANG);
+    if (fromStore && LANGS.includes(fromStore)) return fromStore;
+  } catch(_){}
+  const navLang = (navigator.language || "it").toLowerCase().slice(0,2);
+  return LANGS.includes(navLang) ? navLang : "it";
+}
+
+let lang = detectLang();
+let unit = "cv";
+let powerValue = null;            // null = empty, number = parsed
+let selectedAnimalId = null;
+let computeToken = 0;             // per cancellare loader stantii
+
+/* power/unit da URL */
+for (const u of ["cv","hp","kw"]) {
+  if (params.has(u)) {
+    const v = parseFloat(params.get(u));
+    if (Number.isFinite(v) && v >= 0) { unit = u; powerValue = v; }
+    break;
   }
+}
+/* animale da URL */
+if (params.has("animal")) {
+  const wanted = params.get("animal");
+  if (ANIMALS.some(a => a.id === wanted)) selectedAnimalId = wanted;
+}
 
-  function fmt(n){
-    if(n === 0) return "0";
-    if(n >= 1000) return n.toLocaleString("it-IT", {maximumFractionDigits:0});
-    if(n >= 100)  return n.toLocaleString("it-IT", {maximumFractionDigits:1});
-    if(n >= 10)   return n.toLocaleString("it-IT", {maximumFractionDigits:1});
-    if(n >= 1)    return n.toLocaleString("it-IT", {maximumFractionDigits:2});
-    return n.toLocaleString("it-IT", {maximumFractionDigits:3});
-  }
+/* ──────────────────────────────────────────────────────────────
+   DOM refs
+   ────────────────────────────────────────────────────────────── */
+const $ = id => document.getElementById(id);
+const $power = $("power");
+const $picker = $("picker");
+const $result = $("result");
+const $langSwitch = $("lang-switch");
+const $unitButtons = document.querySelectorAll(".unit-toggle button");
 
-  function renderGrid(){
-    $grid.innerHTML = animals.map(a => `
-      <div class="card">
-        <span class="glyph">${a.glifo}</span>
-        <span class="num" id="n-${a.id}">—</span><span class="unit">${a.emoji}</span>
-        <div class="name">
-          <span>${a.plurale}</span>
-          <span class="ratio">1 = ${(a.watt/CV_TO_W).toFixed(2)} CV</span>
-        </div>
-      </div>
-    `).join("");
-  }
+/* ──────────────────────────────────────────────────────────────
+   Helpers
+   ────────────────────────────────────────────────────────────── */
+function toWatt(value, u){
+  const v = parseFloat(value);
+  if (!Number.isFinite(v) || v < 0) return null;
+  if (u === "cv") return v * CV_TO_W;
+  if (u === "hp") return v * HP_TO_W;
+  if (u === "kw") return v * 1000;
+  return null;
+}
+function fmtInt(n, locale){
+  if (!Number.isFinite(n)) return "—";
+  return Math.round(n).toLocaleString(locale, { maximumFractionDigits:0 });
+}
+function fmtSecondary(n, locale){
+  if (!Number.isFinite(n)) return "—";
+  if (n >= 100) return n.toLocaleString(locale, { maximumFractionDigits:0 });
+  if (n >= 10)  return n.toLocaleString(locale, { maximumFractionDigits:1 });
+  return n.toLocaleString(locale, { maximumFractionDigits:2 });
+}
+function plural(animal, n, lang){
+  const labels = animal.i18n[lang] || animal.i18n.it;
+  return Math.round(n) === 1 ? labels[0] : labels[1];
+}
 
-  function update(){
-    const watt = toWatt($power.value, unit);
+/* ──────────────────────────────────────────────────────────────
+   Render: lingua → tutti i testi UI + meta
+   ────────────────────────────────────────────────────────────── */
+function applyI18n(){
+  const t = I18N[lang];
+  document.documentElement.setAttribute("lang", t.htmlLang);
+  document.title = t.title;
 
-    // Conversione di servizio (kW e HP sempre visibili)
-    $kw.textContent = fmt(watt/1000) + " kW";
-    $hp.textContent = fmt(watt/HP_TO_W) + " HP";
-    if(unit === "kw") $kw.style.opacity = .35; else $kw.style.opacity = 1;
-    if(unit === "hp") $hp.style.opacity = .35; else $hp.style.opacity = 1;
+  const setMeta = (sel, attr, value) => {
+    const el = document.querySelector(sel);
+    if (el) el.setAttribute(attr, value);
+  };
+  setMeta('meta[name="description"]', "content", t.metaDesc);
+  setMeta('meta[property="og:title"]', "content", t.title);
+  setMeta('meta[property="og:description"]', "content", t.tagline);
+  setMeta('meta[property="og:locale"]', "content", t.ogLocale);
+  setMeta('meta[name="twitter:description"]', "content", t.tagline);
 
-    // Animali
-    animals.forEach(a => {
-      const n = watt / a.watt;
-      const el = document.getElementById("n-"+a.id);
-      if(el) el.textContent = fmt(n);
-    });
-  }
-
-  function syncToggle(){
-    $buttons.forEach(b => b.classList.toggle("on", b.dataset.unit === unit));
-  }
-
-  function syncUrl(){
-    const v = parseFloat($power.value);
-    if (!Number.isFinite(v)) return;
-    const u = new URL(location.href);
-    ["cv","hp","kw"].forEach(k => u.searchParams.delete(k));
-    u.searchParams.set(unit, String(v));
-    history.replaceState(null, "", u);
-  }
-
-  $buttons.forEach(b => {
-    b.addEventListener("click", () => {
-      unit = b.dataset.unit;
-      syncToggle();
-      update();
-      syncUrl();
-    });
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const k = el.getAttribute("data-i18n");
+    if (t[k] != null) el.innerHTML = t[k];
   });
+  $power.placeholder = t.power_placeholder;
 
-  $power.addEventListener("input", () => { update(); syncUrl(); });
+  // Lang switch UI
+  $langSwitch.innerHTML = LANGS.map(l =>
+    `<button data-lang="${l}" class="${l===lang?"on":""}" role="tab" aria-selected="${l===lang}">${l.toUpperCase()}</button>`
+  ).join("");
+  $langSwitch.querySelectorAll("button").forEach(b => {
+    b.addEventListener("click", () => setLang(b.dataset.lang));
+  });
+}
 
-  syncToggle();
-  renderGrid();
-  update();
+function setLang(newLang){
+  if (!LANGS.includes(newLang) || newLang === lang) return;
+  lang = newLang;
+  try { localStorage.setItem(STORE_LANG, lang); } catch(_){}
+  applyI18n();
+  renderPicker();
+  renderResult({ instant:true });
+  syncUrl();
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Render: picker animali
+   ────────────────────────────────────────────────────────────── */
+function renderPicker(){
+  $picker.innerHTML = ANIMALS.map(a => {
+    const lbl = (a.i18n[lang] || a.i18n.it)[1]; // plurale come label
+    const sel = a.id === selectedAnimalId;
+    return `<button type="button" class="pick-card" data-id="${a.id}"
+              role="radio" aria-checked="${sel}" aria-selected="${sel}"
+              tabindex="${sel ? 0 : -1}">
+              <span class="ico" aria-hidden="true">${a.emoji}</span>
+              <span class="lbl">${lbl}</span>
+            </button>`;
+  }).join("");
+  $picker.querySelectorAll(".pick-card").forEach(btn => {
+    btn.addEventListener("click", () => onPick(btn.dataset.id));
+  });
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Render: pannello risultato (con loader)
+   instant=true salta il loader (es. cambio lingua/unit a posteriori)
+   ────────────────────────────────────────────────────────────── */
+function renderResult({ instant=false } = {}){
+  const t = I18N[lang];
+
+  // Stato 1: nessun animale scelto → messaggio iniziale
+  if (!selectedAnimalId) {
+    $result.innerHTML = `<div class="result-empty">${t.result_empty}</div>`;
+    return;
+  }
+
+  const animal = ANIMALS.find(a => a.id === selectedAnimalId);
+  if (!animal) {
+    $result.innerHTML = `<div class="result-empty">${t.result_empty}</div>`;
+    return;
+  }
+
+  const watt = toWatt(powerValue, unit);
+
+  // Stato 2: animale scelto ma potenza non valida
+  if (watt == null || watt === 0) {
+    $result.innerHTML = `<div class="result-empty">${t.result_need_power}</div>`;
+    return;
+  }
+
+  const n = watt / animal.watt;
+  const kwTxt = fmtSecondary(watt/1000, t.locale);
+  const hpTxt = fmtSecondary(watt/HP_TO_W, t.locale);
+  const cvTxt = fmtSecondary(watt/CV_TO_W, t.locale);
+  const secondaryRaw = t.result_secondary
+    .replace("{kw}", `<strong>${kwTxt}</strong>`)
+    .replace("{hp}", `<strong>${hpTxt}</strong>`)
+    .replace("{cv}", `<strong>${cvTxt}</strong>`);
+
+  const renderFinal = () => {
+    $result.innerHTML = `
+      <div class="result-content">
+        <span class="result-intro">${t.result_intro}</span>
+        <div class="result-number">${fmtInt(n, t.locale)}</div>
+        <div class="result-animal"><span class="emoji">${animal.emoji}</span>${plural(animal, n, lang)}</div>
+        <div class="result-secondary">${secondaryRaw}</div>
+      </div>`;
+  };
+
+  if (instant) { renderFinal(); return; }
+
+  // Stato 3: loader → risultato
+  const myToken = ++computeToken;
+  $result.innerHTML = `
+    <div class="loader" aria-busy="true">
+      <span class="spin">${animal.emoji}</span>
+      <span class="lbl">${t.loader}</span>
+    </div>`;
+
+  setTimeout(() => {
+    if (myToken !== computeToken) return; // l'utente ha già cambiato qualcosa
+    renderFinal();
+  }, 650);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Eventi
+   ────────────────────────────────────────────────────────────── */
+function onPick(id){
+  selectedAnimalId = id;
+  renderPicker();
+  renderResult();
+  syncUrl();
+}
+
+$power.addEventListener("input", () => {
+  const v = parseFloat($power.value);
+  powerValue = Number.isFinite(v) && v >= 0 ? v : null;
+  // input non triggera loader: aggiornamento istantaneo
+  renderResult({ instant:true });
+  syncUrl();
+});
+
+$unitButtons.forEach(b => {
+  b.addEventListener("click", () => {
+    unit = b.dataset.unit;
+    $unitButtons.forEach(x => {
+      const on = x.dataset.unit === unit;
+      x.classList.toggle("on", on);
+      x.setAttribute("aria-selected", String(on));
+    });
+    renderResult({ instant:true });
+    syncUrl();
+  });
+});
+
+/* ──────────────────────────────────────────────────────────────
+   URL state
+   ────────────────────────────────────────────────────────────── */
+function syncUrl(){
+  const u = new URL(location.href);
+  ["cv","hp","kw","animal","lang"].forEach(k => u.searchParams.delete(k));
+  if (powerValue != null) u.searchParams.set(unit, String(powerValue));
+  if (selectedAnimalId)   u.searchParams.set("animal", selectedAnimalId);
+  if (lang !== "it")      u.searchParams.set("lang", lang);
+  history.replaceState(null, "", u);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Boot
+   ────────────────────────────────────────────────────────────── */
+function init(){
+  // unit toggle iniziale
+  $unitButtons.forEach(x => {
+    const on = x.dataset.unit === unit;
+    x.classList.toggle("on", on);
+    x.setAttribute("aria-selected", String(on));
+  });
+  // power input iniziale
+  if (powerValue != null) $power.value = powerValue;
+
+  // version pin nel footer
+  const $v = $("app-version");
+  if ($v) $v.textContent = "v" + APP_VERSION;
+
+  applyI18n();
+  renderPicker();
+  // se sia animale che potenza arrivano da URL → mostra subito risultato senza loader
+  renderResult({ instant: true });
+}
+
+init();
 </script>
 </body>
 </html>
