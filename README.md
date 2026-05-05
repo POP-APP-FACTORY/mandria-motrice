@@ -160,9 +160,15 @@ mandria-motrice/
 - **i18n inline.** Lingue e traduzioni vivono nello stesso file.
   L'archivio animali porta con sé i propri plurali per ogni lingua —
   così aggiungere un animale o una lingua resta locale a un punto.
-- **Niente backend, niente analytics, niente tracker.** Tutto lato
-  client. L'unica cosa persistita è la preferenza di lingua, in
-  `localStorage`.
+- **Niente backend, niente cookie.** Tutto lato client. L'unica cosa
+  persistita lato browser è la preferenza di lingua, in `localStorage`.
+- **Analytics aggregati anonimi.** Google Analytics 4 via `gtag.js` in
+  modalità *Consent Mode v2 default-denied*: nessun cookie viene
+  scritto, nessun identificatore utente viene generato, nessun banner
+  GDPR è richiesto. Vengono inviati solo *cookieless pings* aggregati
+  (paese, device, page view) utili a sapere se qualcuno usa l'app —
+  niente tracking individuale. Eventi custom: `select_language`,
+  `select_animal`, `change_unit`.
 - **Estetica deliberata.** Tema "catalogo zootecnico vintage / manuale
   tecnico anni '50": carta avorio, inchiostro caldo, bordi netti,
   accenti rosso-amaranto, una texture-noise SVG inline come

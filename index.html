@@ -20,6 +20,25 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;600&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet">
+
+<!-- Google Analytics 4 — cookieless (Consent Mode v2 default-denied). Niente cookie, niente banner GDPR. -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RRBSZFX3MG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('consent','default',{
+    'ad_storage':'denied',
+    'ad_user_data':'denied',
+    'ad_personalization':'denied',
+    'analytics_storage':'denied',
+    'functionality_storage':'denied',
+    'personalization_storage':'denied',
+    'security_storage':'granted'
+  });
+  gtag('js', new Date());
+  gtag('config','G-RRBSZFX3MG', { anonymize_ip:true });
+  window.mmTrack = (name, params) => { try { gtag('event', name, params || {}); } catch(_){} };
+</script>
 <style>
   :root{
     --paper:#ede4d3;
@@ -371,7 +390,11 @@
 <script>
 "use strict";
 
-const APP_VERSION = "2.0.0";
+const APP_VERSION = "2.1.0";
+
+const track = (name, params) => {
+  if (typeof window.mmTrack === "function") window.mmTrack(name, params);
+};
 
 /* ──────────────────────────────────────────────────────────────
    COSTANTI FISICHE
@@ -649,6 +672,7 @@ function setLang(newLang){
   renderPicker();
   renderResult({ instant:true });
   syncUrl();
+  track("select_language", { language: lang });
 }
 
 /* ──────────────────────────────────────────────────────────────
@@ -740,6 +764,7 @@ function onPick(id){
   renderPicker();
   renderResult();
   syncUrl();
+  track("select_animal", { animal_id: id, unit, has_power: powerValue != null });
 }
 
 $power.addEventListener("input", () => {
@@ -760,6 +785,7 @@ $unitButtons.forEach(b => {
     });
     renderResult({ instant:true });
     syncUrl();
+    track("change_unit", { unit });
   });
 });
 
