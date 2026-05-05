@@ -286,6 +286,53 @@
     font-size:.95rem;color:var(--ink);letter-spacing:0;
   }
 
+  /* ─── Share button ────────────────────────── */
+  .share-btn{
+    margin-top:1.5rem;
+    background:transparent;border:1.5px solid var(--ink);
+    color:var(--ink);
+    padding:.75rem 1.4rem;
+    cursor:pointer;
+    font-family:"JetBrains Mono",monospace;
+    font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:.7rem;
+    transition:background .18s, color .18s;
+  }
+  .share-btn:hover,.share-btn:focus-visible{
+    background:var(--ink);color:var(--paper);outline:none;
+  }
+  .share-btn .arrow{
+    font-style:normal;
+    transition:transform .2s ease;
+    display:inline-block;
+  }
+  .share-btn:hover .arrow,
+  .share-btn:focus-visible .arrow{
+    transform:translate(2px,-2px);
+  }
+
+  .toast{
+    position:fixed;left:50%;bottom:2rem;
+    transform:translateX(-50%);
+    background:var(--ink);color:var(--paper);
+    padding:.85rem 1.5rem;
+    font-family:"JetBrains Mono",monospace;
+    font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;
+    border:1.5px solid var(--ink);
+    box-shadow:4px 4px 0 rgba(26,20,16,.18);
+    z-index:1000;
+    animation:toastIn .28s ease;
+    max-width:92vw;text-align:center;
+  }
+  .toast.out{animation:toastOut .32s ease forwards}
+  @keyframes toastIn{
+    from{opacity:0;transform:translate(-50%,10px)}
+    to{opacity:1;transform:translate(-50%,0)}
+  }
+  @keyframes toastOut{
+    to{opacity:0;transform:translate(-50%,6px)}
+  }
+
   /* ─── Methodology + footer ────────────────── */
   details{
     margin:2rem 0 0;
@@ -390,7 +437,7 @@
 <script>
 "use strict";
 
-const APP_VERSION = "2.1.0";
+const APP_VERSION = "2.2.0";
 
 const track = (name, params) => {
   if (typeof window.mmTrack === "function") window.mmTrack(name, params);
@@ -466,6 +513,10 @@ const I18N = {
     methodology_p1:"Il <em>cavallo vapore</em> (CV) fu definito a fine '800 a partire dalla potenza che si supponeva un cavallo da tiro potesse esercitare sostenendo un carico — una stima ottimistica e un po' arcaica. 1 CV equivale a 735.49875 W; 1 HP (horsepower meccanico anglosassone) a 745.7 W. Un cavallo vero, in regime sostenuto, eroga circa 0.1 CV.",
     methodology_p2:"Per coerenza con la logica originale, ogni animale ha qui una <em>potenza nominale di riferimento</em>, calcolata sullo stesso principio del CV: una stima del lavoro di trazione sostenuto, leggermente generosa. I valori sono indicativi e pensati per il confronto, non per omologazioni ministeriali.",
     footer_method:"misurato in unità non SI dal MMXXVI",
+    share_btn:"Condividi",
+    share_text:"Ho scoperto che la mia auto vale {n} {animal} {emoji}\n\nMandria Motrice — convertitore di potenza zootecnica.",
+    share_copied:"Link copiato negli appunti",
+    share_failed:"Condivisione non riuscita",
     locale:"it-IT"
   },
   en:{
@@ -488,6 +539,10 @@ const I18N = {
     methodology_p1:"The <em>metric horsepower</em> (CV) was defined in the late 1800s based on the power a draught horse was thought to sustain — an optimistic, somewhat archaic estimate. 1 CV equals 735.49875 W; 1 HP (mechanical horsepower) is 745.7 W. A real horse in sustained effort delivers about 0.1 CV.",
     methodology_p2:"In keeping with the original logic, each animal has a <em>nominal reference power</em>, computed on the same basis as the CV: an estimate of sustained pulling work, slightly generous. Values are indicative and meant for comparison, not for ministerial homologation.",
     footer_method:"measured in non-SI units since MMXXVI",
+    share_btn:"Share",
+    share_text:"I just found out my car is worth {n} {animal} {emoji}\n\nMandria Motrice — livestock power converter.",
+    share_copied:"Link copied to clipboard",
+    share_failed:"Sharing failed",
     locale:"en-US"
   },
   es:{
@@ -510,6 +565,10 @@ const I18N = {
     methodology_p1:"El <em>caballo de vapor</em> (CV) se definió a finales del siglo XIX a partir de la potencia que se suponía que un caballo de tiro podía sostener — una estimación optimista y algo arcaica. 1 CV equivale a 735.49875 W; 1 HP (caballo mecánico anglosajón) a 745.7 W. Un caballo real, en régimen sostenido, entrega unos 0.1 CV.",
     methodology_p2:"Por coherencia con la lógica original, cada animal tiene aquí una <em>potencia nominal de referencia</em>, calculada con el mismo principio del CV: una estimación del trabajo de tracción sostenido, ligeramente generosa. Los valores son indicativos y pensados para la comparación, no para homologaciones ministeriales.",
     footer_method:"medido en unidades no SI desde MMXXVI",
+    share_btn:"Compartir",
+    share_text:"He descubierto que mi coche vale {n} {animal} {emoji}\n\nMandria Motrice — convertidor de potencia zootécnica.",
+    share_copied:"Enlace copiado al portapapeles",
+    share_failed:"No se pudo compartir",
     locale:"es-ES"
   },
   fr:{
@@ -532,6 +591,10 @@ const I18N = {
     methodology_p1:"Le <em>cheval-vapeur</em> (CV) a été défini à la fin du XIX<sup>e</sup> siècle d'après la puissance qu'un cheval de trait était supposé pouvoir soutenir — une estimation optimiste et un peu archaïque. 1 CV équivaut à 735.49875 W ; 1 HP (cheval mécanique anglo-saxon) à 745.7 W. Un vrai cheval, en régime soutenu, fournit environ 0.1 CV.",
     methodology_p2:"Par cohérence avec la logique originale, chaque animal a ici une <em>puissance nominale de référence</em>, calculée selon le même principe que le CV : une estimation du travail de traction soutenu, légèrement généreuse. Les valeurs sont indicatives et pensées pour la comparaison, pas pour des homologations ministérielles.",
     footer_method:"mesuré en unités non SI depuis MMXXVI",
+    share_btn:"Partager",
+    share_text:"Je viens de découvrir que ma voiture vaut {n} {animal} {emoji}\n\nMandria Motrice — convertisseur de puissance zootechnique.",
+    share_copied:"Lien copié dans le presse-papiers",
+    share_failed:"Échec du partage",
     locale:"fr-FR"
   },
   de:{
@@ -554,6 +617,10 @@ const I18N = {
     methodology_p1:"Die <em>metrische Pferdestärke</em> (PS, hier CV) wurde Ende des 19. Jahrhunderts nach der Leistung definiert, die ein Zugpferd anhaltend leisten sollte — eine optimistische und etwas archaische Schätzung. 1 CV = 735.49875 W; 1 HP (mechanisches Horsepower) = 745.7 W. Ein echtes Pferd liefert dauerhaft etwa 0.1 CV.",
     methodology_p2:"In Anlehnung an die ursprüngliche Logik hat hier jedes Tier eine <em>nominelle Bezugsleistung</em>, nach demselben Prinzip wie das CV berechnet: eine Schätzung anhaltender Zugarbeit, leicht großzügig. Die Werte sind indikativ und für Vergleiche gedacht, nicht für amtliche Zulassungen.",
     footer_method:"gemessen in Nicht-SI-Einheiten seit MMXXVI",
+    share_btn:"Teilen",
+    share_text:"Ich habe gerade entdeckt, dass mein Auto {n} {animal} {emoji} wert ist.\n\nMandria Motrice — zootechnischer Leistungsumwandler.",
+    share_copied:"Link in die Zwischenablage kopiert",
+    share_failed:"Teilen fehlgeschlagen",
     locale:"de-DE"
   }
 };
@@ -737,6 +804,10 @@ function renderResult({ instant=false } = {}){
         <div class="result-number">${fmtInt(n, t.locale)}</div>
         <div class="result-animal"><span class="emoji">${animal.emoji}</span>${plural(animal, n, lang)}</div>
         <div class="result-secondary">${secondaryRaw}</div>
+        <button type="button" class="share-btn" id="share-btn">
+          <span class="arrow" aria-hidden="true">↗</span>
+          <span>${t.share_btn}</span>
+        </button>
       </div>`;
   };
 
@@ -757,6 +828,66 @@ function renderResult({ instant=false } = {}){
 }
 
 /* ──────────────────────────────────────────────────────────────
+   Toast (feedback ephemerale)
+   ────────────────────────────────────────────────────────────── */
+function showToast(msg){
+  const old = document.getElementById("mm-toast");
+  if (old) old.remove();
+  const el = document.createElement("div");
+  el.id = "mm-toast";
+  el.className = "toast";
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.classList.add("out"), 1900);
+  setTimeout(() => el.remove(), 2300);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Share
+   ────────────────────────────────────────────────────────────── */
+async function onShare(){
+  if (!selectedAnimalId) return;
+  const animal = ANIMALS.find(a => a.id === selectedAnimalId);
+  const watt = toWatt(powerValue, unit);
+  if (!animal || watt == null || watt === 0) return;
+
+  const t = I18N[lang];
+  const n = Math.round(watt / animal.watt);
+  const animalLabel = plural(animal, n, lang);
+  const nFmt = n.toLocaleString(t.locale);
+  const text = t.share_text
+    .replace("{n}", nFmt)
+    .replace("{animal}", animalLabel)
+    .replace("{emoji}", animal.emoji);
+  const url = location.href;
+
+  track("share", { animal_id: animal.id, n, language: lang, method: navigator.share ? "native" : "clipboard" });
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: "Mandria Motrice", text, url });
+    } catch(err) {
+      // utente ha annullato (AbortError) → silenzioso. altri errori → fallback.
+      if (err && err.name !== "AbortError") {
+        await copyShareToClipboard(text, url, t);
+      }
+    }
+  } else {
+    await copyShareToClipboard(text, url, t);
+  }
+}
+
+async function copyShareToClipboard(text, url, t){
+  const payload = `${text}\n${url}`;
+  try {
+    await navigator.clipboard.writeText(payload);
+    showToast(t.share_copied);
+  } catch(_) {
+    showToast(t.share_failed);
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────
    Eventi
    ────────────────────────────────────────────────────────────── */
 function onPick(id){
@@ -773,6 +904,12 @@ $power.addEventListener("input", () => {
   // input non triggera loader: aggiornamento istantaneo
   renderResult({ instant:true });
   syncUrl();
+});
+
+// Event delegation sul pannello risultato — il bottone share viene
+// renderizzato dinamicamente, intercettiamo i click sul container.
+$result.addEventListener("click", e => {
+  if (e.target.closest("#share-btn")) onShare();
 });
 
 $unitButtons.forEach(b => {

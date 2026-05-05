@@ -168,7 +168,7 @@ mandria-motrice/
   GDPR è richiesto. Vengono inviati solo *cookieless pings* aggregati
   (paese, device, page view) utili a sapere se qualcuno usa l'app —
   niente tracking individuale. Eventi custom: `select_language`,
-  `select_animal`, `change_unit`.
+  `select_animal`, `change_unit`, `share`.
 - **Estetica deliberata.** Tema "catalogo zootecnico vintage / manuale
   tecnico anni '50": carta avorio, inchiostro caldo, bordi netti,
   accenti rosso-amaranto, una texture-noise SVG inline come
