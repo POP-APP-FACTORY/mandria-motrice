@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mandria Motrice · Convertitore di Potenza Zootecnica</title>
+<meta name="description" content="Quanti animali da fattoria ha la tua automobile? Convertitore di cavalli vapore in mucche, asini, pecore, galline. Pubblicazione apocrifa, misurato in unità non-SI.">
+<meta name="theme-color" content="#ede4d3">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mandria Motrice · Convertitore di Potenza Zootecnica">
+<meta property="og:description" content="Quanti animali ha la tua automobile? Da CV a mucche, asini, pecore, galline.">
+<meta property="og:locale" content="it_IT">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mandria Motrice">
+<meta name="twitter:description" content="Quanti animali ha la tua automobile?">
+
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23ede4d3'/><text x='50' y='72' font-size='68' text-anchor='middle' font-family='serif'>🐄</text></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;600&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#ede4d3;
+    --paper-2:#e3d8c2;
+    --ink:#1a1410;
+    --ink-soft:#3d2f24;
+    --accent:#9c2a2a;
+    --accent-2:#1f3a2e;
+    --rule:rgba(26,20,16,.35);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--paper);color:var(--ink);font-family:"Fraunces",Georgia,serif;font-feature-settings:"liga","onum";line-height:1.5}
+  body{
+    min-height:100vh;
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(0,0,0,.05) 0, transparent 40%),
+      radial-gradient(circle at 80% 90%, rgba(0,0,0,.06) 0, transparent 50%),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .12 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    background-size:auto, auto, 200px 200px;
+    padding:clamp(1rem,4vw,3rem) clamp(1rem,5vw,4rem);
+  }
+
+  .frame{
+    max-width:980px;margin:0 auto;
+    border:1.5px solid var(--ink);
+    background:var(--paper);
+    box-shadow:0 1px 0 var(--ink), 6px 8px 0 rgba(26,20,16,.18);
+    position:relative;
+  }
+  .frame::before{
+    content:"";position:absolute;inset:6px;border:.5px solid var(--rule);pointer-events:none;
+  }
+
+  header{
+    padding:clamp(1.5rem,4vw,3rem) clamp(1.5rem,4vw,3rem) 1.5rem;
+    border-bottom:1.5px solid var(--ink);
+    text-align:center;
+    position:relative;
+  }
+  .meta{
+    font-family:"JetBrains Mono",monospace;
+    font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--ink-soft);
+    display:flex;justify-content:space-between;
+    margin-bottom:1.5rem;
+  }
+  .meta span{display:inline-block}
+  h1{
+    font-family:"DM Serif Display",serif;
+    font-size:clamp(2.2rem,6vw,4rem);
+    line-height:1;letter-spacing:-.02em;
+    font-style:italic;
+    margin-bottom:.4rem;
+  }
+  h1 .amp{font-style:normal;color:var(--accent);font-weight:400}
+  .tag{
+    font-family:"JetBrains Mono",monospace;
+    font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-top:.8rem;
+  }
+  .rule-decor{
+    display:flex;align-items:center;justify-content:center;gap:1rem;
+    margin-top:1.2rem;color:var(--ink-soft);
+  }
+  .rule-decor::before,.rule-decor::after{
+    content:"";flex:1;max-width:120px;height:1px;background:var(--rule);
+  }
+  .rule-decor span{font-family:"JetBrains Mono",monospace;font-size:.65rem;letter-spacing:.3em}
+
+  main{padding:clamp(1.5rem,4vw,3rem)}
+
+  /* Input */
+  .input-group{
+    display:grid;grid-template-columns:1fr auto;gap:0;
+    border:1.5px solid var(--ink);
+    background:var(--paper-2);
+    align-items:stretch;
+    margin-bottom:2rem;
+  }
+  .input-wrap{position:relative;padding:1.2rem 1.4rem .9rem}
+  .input-label{
+    font-family:"JetBrains Mono",monospace;
+    font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--ink-soft);margin-bottom:.3rem;display:block;
+  }
+  #power{
+    width:100%;
+    background:transparent;border:0;outline:0;
+    font-family:"DM Serif Display",serif;font-size:clamp(2rem,5vw,3rem);
+    color:var(--ink);
+    letter-spacing:-.01em;
+    -moz-appearance:textfield;
+  }
+  #power::-webkit-outer-spin-button,#power::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+
+  .unit-toggle{
+    display:flex;flex-direction:column;border-left:1.5px solid var(--ink);
+  }
+  .unit-toggle button{
+    flex:1;background:var(--paper-2);border:0;border-bottom:1px solid var(--rule);
+    padding:.6rem 1.4rem;cursor:pointer;
+    font-family:"JetBrains Mono",monospace;font-size:.75rem;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);
+    transition:background .15s, color .15s;
+  }
+  .unit-toggle button:last-child{border-bottom:0}
+  .unit-toggle button.on{background:var(--ink);color:var(--paper)}
+  .unit-toggle button:hover:not(.on){background:rgba(26,20,16,.08)}
+
+  /* Conversion summary */
+  .conversion{
+    text-align:center;
+    padding:1rem 0 2rem;
+    font-family:"JetBrains Mono",monospace;
+    font-size:.8rem;letter-spacing:.12em;
+    color:var(--ink-soft);
+  }
+  .conversion strong{
+    font-family:"DM Serif Display",serif;
+    font-style:italic;font-weight:400;
+    font-size:1.1rem;
+    color:var(--ink);
+    letter-spacing:0;
+  }
+
+  /* Animal grid */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
+    gap:0;
+    border-top:1.5px solid var(--ink);
+    border-left:1.5px solid var(--ink);
+  }
+  .card{
+    border-right:1.5px solid var(--ink);
+    border-bottom:1.5px solid var(--ink);
+    padding:1.6rem 1.3rem 1.3rem;
+    position:relative;
+    background:var(--paper);
+    transition:background .2s;
+  }
+  .card:hover{background:var(--paper-2)}
+  .card .num{
+    font-family:"DM Serif Display",serif;
+    font-size:clamp(2rem,4.5vw,2.8rem);
+    line-height:1;letter-spacing:-.02em;
+    color:var(--ink);
+    display:block;
+  }
+  .card .unit{
+    font-family:"Fraunces",serif;
+    font-style:italic;font-size:1.4rem;
+    color:var(--accent);
+    margin-left:.2em;
+  }
+  .card .name{
+    font-family:"JetBrains Mono",monospace;
+    font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-top:.8rem;
+    border-top:1px solid var(--rule);
+    padding-top:.6rem;
+    display:flex;justify-content:space-between;align-items:baseline;
+  }
+  .card .glyph{
+    position:absolute;top:.8rem;right:.9rem;
+    font-family:"DM Serif Display",serif;font-style:italic;
+    font-size:.85rem;color:var(--ink-soft);opacity:.6;
+  }
+  .card .ratio{
+    font-family:"JetBrains Mono",monospace;
+    font-size:.6rem;letter-spacing:.1em;
+    color:var(--ink-soft);opacity:.7;
+  }
+
+  /* Footer */
+  footer{
+    padding:1.5rem clamp(1.5rem,4vw,3rem);
+    border-top:1.5px solid var(--ink);
+    font-family:"JetBrains Mono",monospace;
+    font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--ink-soft);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:.8rem;
+  }
+  footer em{font-family:"Fraunces",serif;font-style:italic;letter-spacing:0;text-transform:none;font-size:.8rem;color:var(--ink)}
+
+  details{
+    margin:2rem 0 0;
+    border-top:1px solid var(--rule);
+    padding-top:1.2rem;
+  }
+  summary{
+    cursor:pointer;
+    font-family:"JetBrains Mono",monospace;
+    font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--ink-soft);
+    list-style:none;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary::before{content:"§ "; color:var(--accent)}
+  details[open] summary::before{content:"§ "}
+  details p{
+    margin-top:1rem;font-size:.95rem;color:var(--ink-soft);max-width:60ch;
+  }
+  details p + p{margin-top:.8rem}
+
+  @media (max-width:520px){
+    .input-group{grid-template-columns:1fr}
+    .unit-toggle{flex-direction:row;border-left:0;border-top:1.5px solid var(--ink)}
+    .unit-toggle button{border-bottom:0;border-right:1px solid var(--rule)}
+    .unit-toggle button:last-child{border-right:0}
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+  <header>
+    <div class="meta">
+      <span>Vol. I · No. 1</span>
+      <span>Edizione Italiana</span>
+    </div>
+    <h1>Mandria <em>Motrice</em></h1>
+    <div class="rule-decor"><span>Convertitore di Potenza Zootecnica</span></div>
+    <p class="tag">Quanti animali ha la tua automobile?</p>
+  </header>
+
+  <main>
+    <div class="input-group">
+      <div class="input-wrap">
+        <label class="input-label" for="power">Potenza del veicolo</label>
+        <input type="number" id="power" value="200" min="0" step="1" inputmode="decimal">
+      </div>
+      <div class="unit-toggle" role="tablist">
+        <button data-unit="cv" class="on" role="tab">CV</button>
+        <button data-unit="hp" role="tab">HP</button>
+        <button data-unit="kw" role="tab">kW</button>
+      </div>
+    </div>
+
+    <div class="conversion">
+      ovvero <strong id="kw-out">147.10 kW</strong> &middot; <strong id="hp-out">197.28 HP</strong>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <details>
+      <summary>Note metodologiche</summary>
+      <p>Il <em>cavallo vapore</em> (CV, o <em>metric horsepower</em>) fu definito a fine '800 a partire dalla potenza che si supponeva un cavallo da tiro potesse esercitare sostenendo un carico — una stima ottimistica e un po' arcaica. 1 CV equivale a 735.49875 W; 1 HP (horsepower meccanico anglosassone) a 745.7 W. Un cavallo vero, in regime sostenuto, eroga circa 0.1 CV.</p>
+      <p>Per coerenza con la logica originale, ogni animale ha qui una <em>potenza nominale di riferimento</em>, calcolata sullo stesso principio del CV: una stima del lavoro di trazione sostenuto, leggermente generosa. I valori sono indicativi e pensati per il confronto, non per omologazioni ministeriali.</p>
+    </details>
+  </main>
+
+  <footer>
+    <span>Mandria Motrice</span>
+    <em>misurato in unità non SI dal 2026</em>
+    <span><a href="https://pop-appfactory.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px solid currentColor">Pop-App Factory</a></span>
+  </footer>
+</div>
+
+<script>
+  // Conversioni base
+  const CV_TO_W = 735.49875;
+  const HP_TO_W = 745.7;
+  const CV_TO_HP = CV_TO_W / HP_TO_W; // ~0.9863
+  const HP_TO_CV = HP_TO_W / CV_TO_W; // ~1.0139
+
+  // Animali: potenza nominale in Watt, definita con la stessa logica del CV
+  // (lavoro di trazione sostenuto stimato, leggermente generoso).
+  // Riferimento: 1 CV cavallo metrico = 735.5 W
+  const animals = [
+    { id:"gallina",  nome:"Gallina",  plurale:"galline",  watt:    7.355, glifo:"✺", emoji:"🐔" },
+    { id:"pecora",   nome:"Pecora",   plurale:"pecore",   watt:   73.55,  glifo:"☘", emoji:"🐑" },
+    { id:"maiale",   nome:"Maiale",   plurale:"maiali",   watt:  220.6,   glifo:"❉", emoji:"🐖" },
+    { id:"asino",    nome:"Asino",    plurale:"asini",    watt:  367.7,   glifo:"❋", emoji:"🫏" },
+    { id:"mucca",    nome:"Mucca",    plurale:"mucche",   watt:  588.4,   glifo:"✦", emoji:"🐄" },
+    { id:"bue",      nome:"Bue",      plurale:"buoi",     watt:  882.6,   glifo:"✤", emoji:"🐂" },
+    { id:"cammello", nome:"Cammello", plurale:"cammelli", watt: 1029.7,   glifo:"✱", emoji:"🐪" },
+    { id:"elefante", nome:"Elefante", plurale:"elefanti", watt: 2206.5,   glifo:"❈", emoji:"🐘" }
+  ];
+  // Riferimenti: 1 CV = 735.5 W. Gallina ≈0.01, Pecora ≈0.1, Maiale ≈0.3,
+  // Asino ≈0.5, Mucca ≈0.8, Bue ≈1.2, Cammello ≈1.4, Elefante ≈3 CV.
+  // Valori coerenti tra loro, non omologazioni ministeriali.
+
+  // Stato (può essere precaricato da URL: ?cv=200, ?hp=150, ?kw=110)
+  const params = new URLSearchParams(location.search);
+  let unit = "cv";
+  let initial = 200;
+  for (const u of ["cv","hp","kw"]) {
+    if (params.has(u)) {
+      const v = parseFloat(params.get(u));
+      if (Number.isFinite(v) && v >= 0) { unit = u; initial = v; }
+      break;
+    }
+  }
+  const $power = document.getElementById("power");
+  $power.value = initial;
+  const $kw = document.getElementById("kw-out");
+  const $hp = document.getElementById("hp-out");
+  const $grid = document.getElementById("grid");
+  const $buttons = document.querySelectorAll(".unit-toggle button");
+
+  function toWatt(value, u){
+    const v = parseFloat(value) || 0;
+    if(u === "cv") return v * CV_TO_W;
+    if(u === "hp") return v * HP_TO_W;
+    if(u === "kw") return v * 1000;
+    return 0;
+  }
+
+  function fmt(n){
+    if(n === 0) return "0";
+    if(n >= 1000) return n.toLocaleString("it-IT", {maximumFractionDigits:0});
+    if(n >= 100)  return n.toLocaleString("it-IT", {maximumFractionDigits:1});
+    if(n >= 10)   return n.toLocaleString("it-IT", {maximumFractionDigits:1});
+    if(n >= 1)    return n.toLocaleString("it-IT", {maximumFractionDigits:2});
+    return n.toLocaleString("it-IT", {maximumFractionDigits:3});
+  }
+
+  function renderGrid(){
+    $grid.innerHTML = animals.map(a => `
+      <div class="card">
+        <span class="glyph">${a.glifo}</span>
+        <span class="num" id="n-${a.id}">—</span><span class="unit">${a.emoji}</span>
+        <div class="name">
+          <span>${a.plurale}</span>
+          <span class="ratio">1 = ${(a.watt/CV_TO_W).toFixed(2)} CV</span>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function update(){
+    const watt = toWatt($power.value, unit);
+
+    // Conversione di servizio (kW e HP sempre visibili)
+    $kw.textContent = fmt(watt/1000) + " kW";
+    $hp.textContent = fmt(watt/HP_TO_W) + " HP";
+    if(unit === "kw") $kw.style.opacity = .35; else $kw.style.opacity = 1;
+    if(unit === "hp") $hp.style.opacity = .35; else $hp.style.opacity = 1;
+
+    // Animali
+    animals.forEach(a => {
+      const n = watt / a.watt;
+      const el = document.getElementById("n-"+a.id);
+      if(el) el.textContent = fmt(n);
+    });
+  }
+
+  function syncToggle(){
+    $buttons.forEach(b => b.classList.toggle("on", b.dataset.unit === unit));
+  }
+
+  function syncUrl(){
+    const v = parseFloat($power.value);
+    if (!Number.isFinite(v)) return;
+    const u = new URL(location.href);
+    ["cv","hp","kw"].forEach(k => u.searchParams.delete(k));
+    u.searchParams.set(unit, String(v));
+    history.replaceState(null, "", u);
+  }
+
+  $buttons.forEach(b => {
+    b.addEventListener("click", () => {
+      unit = b.dataset.unit;
+      syncToggle();
+      update();
+      syncUrl();
+    });
+  });
+
+  $power.addEventListener("input", () => { update(); syncUrl(); });
+
+  syncToggle();
+  renderGrid();
+  update();
+</script>
+</body>
+</html>
